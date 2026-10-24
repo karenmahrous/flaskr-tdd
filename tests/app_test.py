@@ -80,3 +80,32 @@ def test_delete_message(client):
     rv = client.get("/delete/1")
     data = json.loads(rv.data)
     assert data["status"] == 1
+
+def test_search_page(client):
+    """Ensure the search page loads"""
+    rv = client.get("/search/")
+    assert rv.status_code == 200
+
+
+def test_search_finds_match(client):
+    """Ensure a search returns matching posts, case-insensitively"""
+    login(client, app.config["USERNAME"], app.config["PASSWORD"])
+    client.post(
+        "/add",
+        data=dict(title="Hello World", text="first post"),
+        follow_redirects=True,
+    )
+    rv = client.get("/search/?query=hello")
+    assert b"Hello World" in rv.data
+
+
+def test_search_no_match(client):
+    """Ensure a search with no matches shows no posts"""
+    login(client, app.config["USERNAME"], app.config["PASSWORD"])
+    client.post(
+        "/add",
+        data=dict(title="Hello World", text="first post"),
+        follow_redirects=True,
+    )
+    rv = client.get("/search/?query=zzzz")
+    assert b"Hello World" not in rv.data
