@@ -1,5 +1,8 @@
+import os
 import json
 from pathlib import Path
+
+os.environ["DATABASE_URL"] = f"sqlite:///{Path(__file__).resolve().parent.parent / 'test.db'}"
 
 import pytest
 
