@@ -1,5 +1,5 @@
 from project.app import app, db
-from project.models import Post
+from project.models import Post  # noqa: F401
 
 with app.app_context():
     # create the database and the db table

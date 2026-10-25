@@ -2,7 +2,9 @@ import os
 import json
 from pathlib import Path
 
-os.environ["DATABASE_URL"] = f"sqlite:///{Path(__file__).resolve().parent.parent / 'test.db'}"
+os.environ["DATABASE_URL"] = (
+    f"sqlite:///{Path(__file__).resolve().parent.parent / 'test.db'}"
+)
 
 import pytest
 
@@ -78,6 +80,7 @@ def test_messages(client):
     assert b"&lt;Hello&gt;" in rv.data
     assert b"<strong>HTML</strong> allowed here" in rv.data
 
+
 def test_delete_message(client):
     """Ensure the messages are being deleted"""
     rv = client.get("/delete/1")
@@ -87,6 +90,7 @@ def test_delete_message(client):
     rv = client.get("/delete/1")
     data = json.loads(rv.data)
     assert data["status"] == 1
+
 
 def test_search_page(client):
     """Ensure the search page loads"""
@@ -116,6 +120,7 @@ def test_search_no_match(client):
     )
     rv = client.get("/search/?query=zzzz")
     assert b"Hello World" not in rv.data
+
 
 def test_delete_requires_login(client):
     """Ensure logged-out users get a 401 when deleting"""

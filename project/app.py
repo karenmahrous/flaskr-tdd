@@ -41,6 +41,7 @@ db = SQLAlchemy(app)
 
 from project import models  # noqa: E402
 
+
 def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
@@ -50,6 +51,7 @@ def login_required(f):
         return f(*args, **kwargs)
 
     return decorated_function
+
 
 @app.route("/")
 def index():
@@ -108,6 +110,7 @@ def delete_entry(post_id):
         result = {"status": 0, "message": repr(e)}
     return jsonify(result)
 
+
 @app.route("/search/", methods=["GET"])
 def search():
     query = request.args.get("query")
@@ -115,6 +118,7 @@ def search():
     if query:
         return render_template("search.html", entries=entries, query=query)
     return render_template("search.html")
+
 
 if __name__ == "__main__":
     app.run()
